@@ -128,7 +128,7 @@ func (team *team) managePipeline(pipelineName string, endpoint string) (bool, er
 	}
 }
 
-func (team *team) RenamePipeline(pipelineName, name string) (bool, error) {
+func (team *team) RenamePipeline(pipelineName, name string) error {
 	params := rata.Params{
 		"pipeline_name": pipelineName,
 		"team_name":     team.name,
@@ -136,21 +136,13 @@ func (team *team) RenamePipeline(pipelineName, name string) (bool, error) {
 
 	jsonBytes, err := json.Marshal(atc.RenameRequest{NewName: name})
 	if err != nil {
-		return false, err
+		return err
 	}
 
-	err = team.connection.Send(internal.Request{
+	return team.connection.Send(internal.Request{
 		RequestName: atc.RenamePipeline,
 		Params:      params,
 		Body:        bytes.NewBuffer(jsonBytes),
 		Header:      http.Header{"Content-Type": []string{"application/json"}},
 	}, nil)
-	switch err.(type) {
-	case nil:
-		return true, nil
-	case internal.ResourceNotFoundError:
-		return false, nil
-	default:
-		return false, err
-	}
 }

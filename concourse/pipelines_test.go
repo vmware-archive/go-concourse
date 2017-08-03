@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/concourse/atc"
+	"github.com/concourse/go-concourse/concourse/internal"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/ghttp"
@@ -362,9 +363,8 @@ var _ = Describe("ATC Handler Pipelines", func() {
 			})
 
 			It("renames the pipeline when called", func() {
-				renamed, err := team.RenamePipeline("mypipeline", "newpipelinename")
+				err := team.RenamePipeline("mypipeline", "newpipelinename")
 				Expect(err).NotTo(HaveOccurred())
-				Expect(renamed).To(BeTrue())
 			})
 		})
 
@@ -375,10 +375,12 @@ var _ = Describe("ATC Handler Pipelines", func() {
 				)
 			})
 
-			It("returns false and no error", func() {
-				renamed, err := team.RenamePipeline("mypipeline", "newpipelinename")
-				Expect(err).NotTo(HaveOccurred())
-				Expect(renamed).To(BeFalse())
+			It("returns a ResourceNotFound error", func() {
+				err := team.RenamePipeline("mypipeline", "newpipelinename")
+				Expect(err).To(HaveOccurred())
+
+				_, ok := err.(internal.ResourceNotFoundError)
+				Expect(ok).To(BeTrue())
 			})
 		})
 
@@ -390,9 +392,8 @@ var _ = Describe("ATC Handler Pipelines", func() {
 			})
 
 			It("returns an error", func() {
-				renamed, err := team.RenamePipeline("mypipeline", "newpipelinename")
+				err := team.RenamePipeline("mypipeline", "newpipelinename")
 				Expect(err).To(MatchError(ContainSubstring("418 I'm a teapot")))
-				Expect(renamed).To(BeFalse())
 			})
 		})
 	})

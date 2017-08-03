@@ -22,7 +22,7 @@ type Team interface {
 	UnpausePipeline(pipelineName string) (bool, error)
 	ExposePipeline(pipelineName string) (bool, error)
 	HidePipeline(pipelineName string) (bool, error)
-	RenamePipeline(pipelineName, name string) (bool, error)
+	RenamePipeline(pipelineName, name string) error
 	PauseResource(pipelineName string, resourceName string) (bool, error)
 	UnpauseResource(pipelineName string, resourceName string) (bool, error)
 	ListPipelines() ([]atc.Pipeline, error)
