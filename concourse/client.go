@@ -20,11 +20,7 @@ type Client interface {
 	BuildEvents(buildID string) (Events, error)
 	BuildResources(buildID int) (atc.BuildInputsOutputs, bool, error)
 	AbortBuild(buildID string) error
-	CreateBuild(plan atc.Plan) (atc.Build, error)
 	BuildPlan(buildID int) (atc.PublicBuildPlan, bool, error)
-	CreatePipe() (atc.Pipe, error)
-	ListContainers(queryList map[string]string) ([]atc.Container, error)
-	ListVolumes() ([]atc.Volume, error)
 	SaveWorker(atc.Worker, *time.Duration) (*atc.Worker, error)
 	ListWorkers() ([]atc.Worker, error)
 	PruneWorker(workerName string) error
