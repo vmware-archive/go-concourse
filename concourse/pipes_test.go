@@ -18,7 +18,7 @@ var _ = Describe("ATC Handler Pipes", func() {
 		)
 
 		BeforeEach(func() {
-			expectedURL = "/api/v1/pipes"
+			expectedURL = "/api/v1/teams/some-team/pipes"
 			expectedPipe = atc.Pipe{
 				ID: "foo",
 			}
@@ -32,7 +32,7 @@ var _ = Describe("ATC Handler Pipes", func() {
 		})
 
 		It("Creates the Pipe when called", func() {
-			pipe, err := client.CreatePipe()
+			pipe, err := team.CreatePipe()
 			Expect(err).NotTo(HaveOccurred())
 			Expect(pipe).To(Equal(expectedPipe))
 		})
