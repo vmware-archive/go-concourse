@@ -528,6 +528,19 @@ type FakeTeam struct {
 		result1 []atc.Container
 		result2 error
 	}
+	ListCheckContainerDetailsStub        func(bool) ([]atc.Container, error)
+	listCheckContainerDetailsMutex       sync.RWMutex
+	listCheckContainerDetailsArgsForCall []struct {
+		arg1 bool
+	}
+	listCheckContainerDetailsReturns struct {
+		result1 []atc.Container
+		result2 error
+	}
+	listCheckContainerDetailsReturnsOnCall map[int]struct {
+		result1 []atc.Container
+		result2 error
+	}
 	ListVolumesStub        func() ([]atc.Volume, error)
 	listVolumesMutex       sync.RWMutex
 	listVolumesArgsForCall []struct{}
@@ -2443,6 +2456,57 @@ func (fake *FakeTeam) ListContainersReturnsOnCall(i int, result1 []atc.Container
 	}{result1, result2}
 }
 
+func (fake *FakeTeam) ListCheckContainerDetails(arg1 bool) ([]atc.Container, error) {
+	fake.listCheckContainerDetailsMutex.Lock()
+	ret, specificReturn := fake.listCheckContainerDetailsReturnsOnCall[len(fake.listCheckContainerDetailsArgsForCall)]
+	fake.listCheckContainerDetailsArgsForCall = append(fake.listCheckContainerDetailsArgsForCall, struct {
+		arg1 bool
+	}{arg1})
+	fake.recordInvocation("ListCheckContainerDetails", []interface{}{arg1})
+	fake.listCheckContainerDetailsMutex.Unlock()
+	if fake.ListCheckContainerDetailsStub != nil {
+		return fake.ListCheckContainerDetailsStub(arg1)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fake.listCheckContainerDetailsReturns.result1, fake.listCheckContainerDetailsReturns.result2
+}
+
+func (fake *FakeTeam) ListCheckContainerDetailsCallCount() int {
+	fake.listCheckContainerDetailsMutex.RLock()
+	defer fake.listCheckContainerDetailsMutex.RUnlock()
+	return len(fake.listCheckContainerDetailsArgsForCall)
+}
+
+func (fake *FakeTeam) ListCheckContainerDetailsArgsForCall(i int) bool {
+	fake.listCheckContainerDetailsMutex.RLock()
+	defer fake.listCheckContainerDetailsMutex.RUnlock()
+	return fake.listCheckContainerDetailsArgsForCall[i].arg1
+}
+
+func (fake *FakeTeam) ListCheckContainerDetailsReturns(result1 []atc.Container, result2 error) {
+	fake.ListCheckContainerDetailsStub = nil
+	fake.listCheckContainerDetailsReturns = struct {
+		result1 []atc.Container
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeTeam) ListCheckContainerDetailsReturnsOnCall(i int, result1 []atc.Container, result2 error) {
+	fake.ListCheckContainerDetailsStub = nil
+	if fake.listCheckContainerDetailsReturnsOnCall == nil {
+		fake.listCheckContainerDetailsReturnsOnCall = make(map[int]struct {
+			result1 []atc.Container
+			result2 error
+		})
+	}
+	fake.listCheckContainerDetailsReturnsOnCall[i] = struct {
+		result1 []atc.Container
+		result2 error
+	}{result1, result2}
+}
+
 func (fake *FakeTeam) ListVolumes() ([]atc.Volume, error) {
 	fake.listVolumesMutex.Lock()
 	ret, specificReturn := fake.listVolumesReturnsOnCall[len(fake.listVolumesArgsForCall)]
@@ -2717,6 +2781,8 @@ func (fake *FakeTeam) Invocations() map[string][][]interface{} {
 	defer fake.buildsWithVersionAsOutputMutex.RUnlock()
 	fake.listContainersMutex.RLock()
 	defer fake.listContainersMutex.RUnlock()
+	fake.listCheckContainerDetailsMutex.RLock()
+	defer fake.listCheckContainerDetailsMutex.RUnlock()
 	fake.listVolumesMutex.RLock()
 	defer fake.listVolumesMutex.RUnlock()
 	fake.createBuildMutex.RLock()
