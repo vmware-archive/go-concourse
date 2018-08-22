@@ -27,3 +27,24 @@ func (team *team) ListContainers(queryList map[string]string) ([]atc.Container, 
 	})
 	return containers, err
 }
+
+func (team *team) ListCheckContainerDetails(detailed bool) ([]atc.Container, error) {
+	var containers []atc.Container
+	params := rata.Params{
+		"team_name": team.name,
+	}
+
+	var requestName string
+	if detailed {
+		requestName = atc.ListCheckContainersDetailed
+	} else {
+		requestName = atc.ListCheckContainers
+	}
+	err := team.connection.Send(internal.Request{
+		RequestName: requestName,
+		Params:      params,
+	}, &internal.Response{
+		Result: &containers,
+	})
+	return containers, err
+}
