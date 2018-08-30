@@ -19,6 +19,8 @@ type Team interface {
 	DeletePipeline(pipelineName string) (bool, error)
 	PausePipeline(pipelineName string) (bool, error)
 	UnpausePipeline(pipelineName string) (bool, error)
+	ArchivePipeline(pipelineName string) (bool, error)
+	UnarchivePipeline(pipelineName string) (bool, error)
 	ExposePipeline(pipelineName string) (bool, error)
 	HidePipeline(pipelineName string) (bool, error)
 	RenamePipeline(pipelineName, name string) (bool, error)
