@@ -8,6 +8,23 @@ import (
 	"github.com/tedsuo/rata"
 )
 
+func (team *team) Container(handle string) (atc.Container, error) {
+	var container atc.Container
+
+	params := rata.Params{
+		"team_name": team.name,
+		"id":        handle,
+	}
+
+	err := team.connection.Send(internal.Request{
+		RequestName: atc.GetContainer,
+		Params:      params,
+	}, &internal.Response{
+		Result: &container,
+	})
+	return container, err
+}
+
 func (team *team) ListContainers(queryList map[string]string) ([]atc.Container, error) {
 	var containers []atc.Container
 	urlValues := url.Values{}
